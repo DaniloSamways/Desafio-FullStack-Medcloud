@@ -29,10 +29,17 @@ export default function Home() {
           gap: 2,
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <PageTitle>Pacientes</PageTitle>
-          <SearchInput />
-          <FilledButton>Pesquisar</FilledButton>
+          <Box sx={{
+            display: "flex",
+            ml: 6,
+            gap: 2,
+            flex: 1
+          }}>
+            <SearchInput />
+            <FilledButton>Buscar</FilledButton>
+          </Box>
         </Box>
         <PatientsGrid rows={rows} />
       </Box>
