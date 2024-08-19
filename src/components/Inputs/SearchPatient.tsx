@@ -20,11 +20,7 @@ export function SearchInput() {
           color: "grey.500",
         }}
       />
-      <InputBase
-        sx={{ flex: 1 }}
-        placeholder="Search Google Maps"
-        inputProps={{ "aria-label": "search google maps" }}
-      />
+      <InputBase sx={{ flex: 1 }} />
     </Box>
   );
 }
