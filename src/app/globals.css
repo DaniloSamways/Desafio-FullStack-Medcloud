@@ -1,5 +1,8 @@
 :root {
-  --border-radius: 12px;
+  --border-radius: 8px;
+  --button-border-radius: 4px;
+  --padding-x: 4rem;
+  --padding-y: 1rem;
 }
 
 * {
