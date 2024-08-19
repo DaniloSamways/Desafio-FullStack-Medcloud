@@ -15,7 +15,7 @@ export function Calendar() {
         left: "50%",
         border: "1px solid",
         borderRadius: "var(--border-radius)",
-        borderColor: "grey.400",
+        borderColor: "divider",
         px: 2,
         py: 0.6,
         fontSize: "0.9rem",

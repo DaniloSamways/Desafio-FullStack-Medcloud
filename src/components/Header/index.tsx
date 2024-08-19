@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { Calendar } from "./Calendar";
+import Link from "next/link";
 
 export function Header() {
   return (
@@ -13,10 +14,12 @@ export function Header() {
         px: "var(--padding-x)",
         py: "var(--padding-y)",
         borderBottom: "1px solid",
-        borderColor: "grey.300",
+        borderColor: "divider",
       }}
     >
-      <Typography variant="h4">Logo</Typography>
+      <Link href="/">
+        <Typography variant="h4">Logo</Typography>
+      </Link>
       <Calendar />
     </Box>
   );
