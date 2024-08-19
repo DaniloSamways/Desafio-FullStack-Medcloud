@@ -16,6 +16,7 @@ const columns: GridColDef[] = [
     field: "birth_date",
     headerName: "Data de nascimento",
     flex: 1,
+    minWidth: 200,
     valueGetter: (value) =>
       new Date(value).toLocaleDateString("pt-BR", {
         day: "numeric",
@@ -47,7 +48,6 @@ export function PatientsGrid({ rows }: PatientsGridProps) {
       columns={columns}
       disableMultipleRowSelection
       disableRowSelectionOnClick
-      disableColumnResize
     />
   );
 }
