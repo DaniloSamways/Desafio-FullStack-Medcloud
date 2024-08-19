@@ -15,7 +15,7 @@ export function CreatePatientBox() {
         borderColor: "divider",
       }}
     >
-      <FilledButton startIcon={<AddIcon />}>Novo</FilledButton>
+      <FilledButton startIcon={<AddIcon />} color="secondary">Novo</FilledButton>
     </Box>
   );
 }

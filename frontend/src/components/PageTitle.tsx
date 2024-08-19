@@ -5,7 +5,9 @@ export function PageTitle({ children }: { children: React.ReactNode }) {
     <Typography
       variant="h1"
       sx={{
-        fontSize: "2.2rem",
+        fontSize: "1.4rem",
+        color: "grey.600",
+        fontWeight: "500"
       }}
     >
       {children}
