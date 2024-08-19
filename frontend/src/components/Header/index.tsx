@@ -1,6 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { Calendar } from "./Calendar";
 import Link from "next/link";
+import Logo from "@/assets/logo.png";
+import Image from "next/image";
 
 export function Header() {
   return (
@@ -12,13 +14,13 @@ export function Header() {
         alignItems: "center",
         justifyContent: "space-between",
         px: "var(--padding-x)",
-        py: "var(--padding-y)",
+        py: 1,
         borderBottom: "1px solid",
         borderColor: "divider",
       }}
     >
       <Link href="/">
-        <Typography variant="h4">Logo</Typography>
+        <Image src={Logo} alt="Logo" width={200} />
       </Link>
       <Calendar />
     </Box>
