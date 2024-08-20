@@ -7,12 +7,13 @@ export function SearchInput() {
       sx={{
         width: "50%",
         border: "1px solid",
-        borderColor: "grey.400",
+        borderColor: "grey.300",
         borderRadius: "var(--border-radius)",
         display: "flex",
         alignItems: "center",
         px: 2,
         gap: 2,
+        backgroundColor: "white",
       }}
     >
       <SearchIcon

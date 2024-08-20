@@ -7,13 +7,14 @@ export function OutlinedButton({
   return (
     <Button
       {...props}
-      variant="outlined"
       sx={{
         px: 4,
         py: 0.5,
         color: "primary.main",
         fontWeight: "500",
+        ...props.sx,
       }}
+      variant="outlined"
     >
       {children}
     </Button>

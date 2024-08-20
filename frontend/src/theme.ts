@@ -15,6 +15,7 @@ export const theme = createTheme({
         root: {
           textTransform: "none",
           color: "white",
+          borderRadius: 8,
         },
       },
     },

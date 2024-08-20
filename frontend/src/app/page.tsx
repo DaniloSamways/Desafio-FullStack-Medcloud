@@ -4,44 +4,45 @@ import { PatientsGrid } from "@/components/Home/PatientsGrid";
 import { SearchInput } from "@/components/Inputs/SearchPatient";
 import { PageTitle } from "@/components/PageTitle";
 import { Box } from "@mui/material";
-import { GridRowsProp } from "@mui/x-data-grid";
-
-const rows: GridRowsProp = [
-  {
-    id: 1,
-    name: "Danilo Samways",
-    email: "danilo@gmail.com",
-    birth_date: "2005-12-27",
-  },
-];
 
 export default function Home() {
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <CreatePatientBox />
       <Box
         component={"main"}
         sx={{
-          mx: "var(--padding-x)",
-          my: "var(--padding-y)",
+          px: "var(--padding-x)",
+          py: "var(--padding-y)",
+          pb: 10,
           display: "flex",
           flexDirection: "column",
+          flex: 1,
           gap: 2,
+          backgroundColor: "#f2f2f3"
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", py: 1.6 }}>
           <PageTitle>Pacientes</PageTitle>
-          <Box sx={{
-            display: "flex",
-            ml: 6,
-            gap: 2,
-            flex: 1
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              ml: 6,
+              gap: 2,
+              flex: 1,
+            }}
+          >
             <SearchInput />
             <FilledButton>Buscar</FilledButton>
           </Box>
         </Box>
-        <PatientsGrid rows={rows} />
+        <PatientsGrid />
       </Box>
     </Box>
   );

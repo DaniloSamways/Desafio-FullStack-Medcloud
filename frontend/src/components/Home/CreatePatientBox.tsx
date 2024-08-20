@@ -1,7 +1,10 @@
-import { Box, Button } from "@mui/material";
+"use client";
+
+import { Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { FilledButton } from "../Buttons/FilledButton";
-import { OutlinedButton } from "../Buttons/OutlinedButton";
+import { useDispatch, useSelector } from "react-redux";
+import { Patient } from "@/models/Patient";
 
 export function CreatePatientBox() {
   return (
@@ -15,7 +18,12 @@ export function CreatePatientBox() {
         borderColor: "divider",
       }}
     >
-      <FilledButton startIcon={<AddIcon />} color="secondary">Novo</FilledButton>
+      <FilledButton
+        startIcon={<AddIcon />}
+        color="secondary"
+      >
+        Novo
+      </FilledButton>
     </Box>
   );
 }

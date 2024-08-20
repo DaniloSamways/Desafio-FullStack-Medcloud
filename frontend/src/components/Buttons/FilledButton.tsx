@@ -11,6 +11,7 @@ export function FilledButton({
       sx={{
         px: 4,
         py: 0.5,
+        ...props.sx,
       }}
     >
       {children}
