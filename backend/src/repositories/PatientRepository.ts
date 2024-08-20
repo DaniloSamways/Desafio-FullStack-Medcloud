@@ -1,12 +1,16 @@
 import { pg } from "../database/pg";
-import { CreatePatientInput, Patient, UpdatePatientInput } from "../models/Patient";
+import {
+  CreatePatientInput,
+  Patient,
+  UpdatePatientInput,
+} from "../models/Patient";
 
 export class PatientRepository {
   async createPatient(data: CreatePatientInput): Promise<Patient> {
     const createdPatient = await pg
       .query<Patient>(
         "INSERT INTO patient (name, email, birth_date, address) VALUES ($1, $2, $3, $4) RETURNING *",
-        [data.name, data.email, data.birth_date, data.address]
+        [data.name, data.email, data.birth_date, JSON.stringify(data.address)]
       )
       ?.then((res) => {
         return res.rows[0];
@@ -31,6 +35,10 @@ export class PatientRepository {
 
   async updatePatient(id: string, data: UpdatePatientInput): Promise<Patient> {
     const updateFields = Object.keys(data).map((key, index) => {
+      if (key === "address") {
+        return `${key} = $${key}::jsonb || ${JSON.stringify(data[key])} `;
+      }
+
       return `${key} = $${index + 2} `;
     });
 
