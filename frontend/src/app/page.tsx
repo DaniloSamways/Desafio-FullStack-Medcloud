@@ -1,3 +1,5 @@
+"use client";
+
 import { FilledButton } from "@/components/Buttons/FilledButton";
 import { CreatePatientBox } from "@/components/Home/CreatePatientBox";
 import { PatientsGrid } from "@/components/Home/PatientsGrid";
@@ -25,7 +27,7 @@ export default function Home() {
           flexDirection: "column",
           flex: 1,
           gap: 2,
-          backgroundColor: "#f2f2f3"
+          backgroundColor: "#f2f2f3",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", py: 1.6 }}>

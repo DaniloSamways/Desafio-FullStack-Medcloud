@@ -3,6 +3,8 @@
   --button-border-radius: 4px;
   --padding-x: 4rem;
   --padding-y: 1rem;
+  --secondary-background-color: #f2f2f3;
+  --primary-background-color: #fff;
 }
 
 * {

@@ -3,10 +3,11 @@
 import { Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { FilledButton } from "../Buttons/FilledButton";
-import { useDispatch, useSelector } from "react-redux";
-import { Patient } from "@/models/Patient";
+import { useRouter } from "next/navigation";
 
 export function CreatePatientBox() {
+  const router = useRouter();
+
   return (
     <Box
       sx={{
@@ -20,6 +21,9 @@ export function CreatePatientBox() {
     >
       <FilledButton
         startIcon={<AddIcon />}
+        onClick={() => {
+          router.push("/novo");
+        }}
         color="secondary"
       >
         Novo

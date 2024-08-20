@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={patientsStore}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </Provider>
   );
 }

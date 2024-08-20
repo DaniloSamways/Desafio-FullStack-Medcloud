@@ -7,7 +7,7 @@ export function PageTitle({ children }: { children: React.ReactNode }) {
       sx={{
         fontSize: "1.4rem",
         color: "grey.600",
-        fontWeight: "500"
+        fontWeight: "600",
       }}
     >
       {children}
