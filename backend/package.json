@@ -15,6 +15,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "serverless-esbuild": "^1.52.1",
     "@types/express": "^4.17.21",
     "@types/pg": "^8.11.6",
     "serverless-offline": "^14.0.0",
