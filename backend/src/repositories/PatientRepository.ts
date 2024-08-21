@@ -9,8 +9,8 @@ export class PatientRepository {
   async createPatient(data: CreatePatientInput): Promise<Patient> {
     const createdPatient = await pg
       .query<Patient>(
-        "INSERT INTO patient (name, email, birth_date, address) VALUES ($1, $2, $3, $4) RETURNING *",
-        [data.name, data.email, data.birth_date, JSON.stringify(data.address)]
+        "INSERT INTO patient (name, email, cpf, birth_date, address) VALUES ($1, $2, $3, $4) RETURNING *",
+        [data.name, data.email, data.cpf, data.birth_date, JSON.stringify(data.address)]
       )
       ?.then((res) => {
         return res.rows[0];
