@@ -4,51 +4,26 @@ import { FilledButton } from "@/components/Buttons/FilledButton";
 import { Footer } from "@/components/Footer";
 import PatientForm from "@/components/Form/PatientForm";
 import { PageTitle } from "@/components/PageTitle";
-import { CreatePatientSchema, createPatientSchema } from "@/models/Patient";
-import { addPatient } from "@/store";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { CreatePatientSchema, Patient } from "@/models/Patient";
+import { updatePatient } from "@/store";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-export default function NewPatient() {
+export function Client({ patient }: { patient: Patient }) {
   const {
     register,
+    control,
     handleSubmit,
     trigger,
     formState: { errors },
-    control,
-  } = useForm<CreatePatientSchema>({
-    resolver: zodResolver(createPatientSchema),
-  });
+  } = useForm<CreatePatientSchema>();
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<CreatePatientSchema> = async (data: CreatePatientSchema) => {
-    console.log(data);
-    const payload = {
-      ...data,
-      address: {
-        city: data.city,
-        district: data.district,
-        number: data.number,
-        street: data.street,
-        zip_code: data.zip_code,
-        state: data.state,
-        country: data.country,
-      }
-    }
-
-    const response = await fetch("http://localhost:3000/patients", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    }).then((res) => res.json());
-
-    dispatch(addPatient(response));
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    dispatch(updatePatient(data));
     router.push("/");
   };
 
