@@ -36,10 +36,13 @@ export class PatientRepository {
   async updatePatient(id: string, data: UpdatePatientInput): Promise<Patient> {
     const updateFields = Object.keys(data).map((key, index) => {
       if (key === "address") {
-        return `${key} = $${key}::jsonb || ${JSON.stringify(data[key])} `;
+        `${key} = ${key}::jsonb || ${JSON.stringify(data[key])} `;
+        // remove address property from data
+
+        return;
       }
 
-      return `${key} = $${index + 2} `;
+      return `${key} = ${index + 2} `;
     });
 
     const updatedPatient = await pg

@@ -43,6 +43,7 @@ export class PatientController {
       const updatedPatient = await this.service.updatePatient(id, req.body);
       return res.status(201).json(updatedPatient);
     } catch (error: any) {
+      console.log(error);
       next(error);
     }
   }
