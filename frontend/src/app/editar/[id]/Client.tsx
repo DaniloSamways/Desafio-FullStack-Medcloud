@@ -14,15 +14,51 @@ import { useDispatch } from "react-redux";
 export function Client({ patient }: { patient: Patient }) {
   const {
     register,
-    control,
     handleSubmit,
     trigger,
     formState: { errors },
-  } = useForm<CreatePatientSchema>();
+  } = useForm<CreatePatientSchema>({
+    defaultValues: {
+      name: patient.name,
+      email: patient.email,
+      cpf: patient.cpf,
+      birth_date: patient.birth_date,
+      city: patient.address.city,
+      district: patient.address.district,
+      number: patient.address.number,
+      street: patient.address.street,
+      zip_code: patient.address.zip_code,
+      state: patient.address.state,
+      country: patient.address.country,
+    },
+  });
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const payload = {
+      ...data,
+      address: {
+        city: data.city,
+        district: data.district,
+        number: data.number,
+        street: data.street,
+        zip_code: data.zip_code,
+        state: data.state,
+        country: data.country,
+      },
+    };
+
+    const response = await fetch(
+      `http://localhost:3000/patients/${patient.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    ).then((res) => res.json());
     dispatch(updatePatient(data));
     router.push("/");
   };
@@ -49,7 +85,7 @@ export function Client({ patient }: { patient: Patient }) {
           gap: 2,
         }}
       >
-        <PageTitle>Cadastrar paciente</PageTitle>
+        <PageTitle>Editar paciente</PageTitle>
         <PatientForm
           register={register}
           errors={errors}
@@ -75,7 +111,7 @@ export function Client({ patient }: { patient: Patient }) {
           Cancelar
         </FilledButton>
         <FilledButton color="secondary" onClick={handleSave}>
-          Cadastrar
+          Salvar
         </FilledButton>
       </Footer>
     </>

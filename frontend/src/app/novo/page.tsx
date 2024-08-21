@@ -26,7 +26,6 @@ export default function NewPatient() {
   const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<CreatePatientSchema> = async (data: CreatePatientSchema) => {
-    console.log(data);
     const payload = {
       ...data,
       address: {

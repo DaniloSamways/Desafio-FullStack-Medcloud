@@ -3,7 +3,7 @@ import { FormInput } from "../Inputs/FormInput";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { FormEventHandler } from "react";
 import { Form } from ".";
-import { CreatePatientSchema } from "@/models/Patient";
+import { CreatePatientSchema, Patient } from "@/models/Patient";
 
 function Inputt({
   label,
