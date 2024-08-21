@@ -1,26 +1,27 @@
-"use client";
+import { redirect } from "next/navigation";
+import { Client } from "./Client";
 
-function fetchPatient(id: string) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        nome: "Nome Existente",
-        descricao: "Descrição Existente",
-        // Outros dados
-      });
-    }, 1000);
-  });
-  //   return fetch(`http://localhost:3000/patients/${id}`);
+async function fetchPatient(id: string) {
+  const response = await fetch(`http://localhost:3000/patients/${id}`);
+  if (!response.ok) {
+    return null;
+  }
+  return response.json();
 }
 
-export default function EditPatient({ params }: { params: { id: string } }) {
+export default async function EditPatient({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
+  const patient = await fetchPatient(id);
 
-  const patient = fetchPatient(id);
+  if (!patient) {
+     return redirect("/");
+  }
 
   return (
-    <h1>
-      Editar paciente {id} {patient.then((data: any) => data.nome)}
-    </h1>
+    <Client patient={patient} />
   );
 }

@@ -1,23 +1,16 @@
-import { Box, InputBase, Typography } from "@mui/material";
-import { Control, Controller, FieldValues } from "react-hook-form";
+import { Box, Typography } from "@mui/material";
+import { InputField } from "../Input/InputField";
+import { InputErrorMessage } from "../Input/InputErrorMessage";
+import { UseFormRegister } from "react-hook-form";
 
 interface FormInputProps {
-  mask?: string;
   label: string;
   value?: string;
-  name: string;
-  control: Control<FieldValues>;
   errorMessage?: string;
+  register: UseFormRegister<any>;
 }
 
-export function FormInput({
-  mask,
-  label,
-  value,
-  name,
-  control,
-  errorMessage,
-}: FormInputProps) {
+export function FormInput({ register, label, value, errorMessage }: FormInputProps) {
   return (
     <Box
       sx={{
@@ -46,40 +39,22 @@ export function FormInput({
         >
           {label}
         </Typography>
-        <Controller
-          name={name}
-          control={control}
-          render={({ field }) => (
-            <InputBase
-              {...field}
-              placeholder="-"
-              value={value}
-              sx={{
-                mt: -0.5,
-                fontSize: 14,
-                color: "grey.800",
-                "& input::placeholder": {
-                  color: "grey.800",
-                  fontWeight: "bold",
-                },
-              }}
-            />
-          )}
+        <InputField
+          register={register}
+          placeholder="-"
+          value={value}
+          sx={{
+            mt: -0.5,
+            fontSize: 14,
+            color: "grey.800",
+            "& input::placeholder": {
+              color: "grey.800",
+              fontWeight: "bold",
+            },
+          }}
         />
       </Box>
-      {errorMessage && (
-        <Typography
-          variant="caption"
-          sx={{
-            position: "absolute",
-            bottom: -25,
-            color: "error.main",
-            mt: 1,
-          }}
-        >
-          {errorMessage}
-        </Typography>
-      )}
+      {errorMessage && <InputErrorMessage>{errorMessage}</InputErrorMessage>}
     </Box>
   );
 }

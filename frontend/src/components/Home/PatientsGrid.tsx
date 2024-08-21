@@ -5,10 +5,14 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
-import { Modal } from "../Modals/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Patient } from "@/models/Patient";
 import { deletePatient, setPatients } from "@/store";
+import { Modal } from "../Modal";
+import { OutlinedButton } from "../Buttons/OutlinedButton";
+import { FilledButton } from "../Buttons/FilledButton";
+import { useRouter } from "next/navigation";
+import { Grid } from "@/components/Grid";
 
 export function PatientsGrid() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -23,6 +27,7 @@ export function PatientsGrid() {
   const patients = useSelector((state: { patients: Patient[] }) => {
     return state.patients;
   });
+  const router = useRouter();
 
   const columns: GridColDef[] = [
     { field: "name", headerName: "Nome", width: 250 },
@@ -53,7 +58,7 @@ export function PatientsGrid() {
             gap: 2,
           }}
         >
-          <IconButton>
+          <IconButton onClick={() => router.push(`/editar/${val.row.id}`)}>
             <EditIcon />
           </IconButton>
           <IconButton
@@ -89,6 +94,8 @@ export function PatientsGrid() {
       fetchPatients();
     } catch (error) {
       console.error(error);
+    } finally {
+      setOpenModal(false);
     }
   };
 
@@ -102,53 +109,36 @@ export function PatientsGrid() {
         height: "100%",
       }}
     >
-      <DataGrid
-        loading={loadingGrid}
-        slots={{
-          noRowsOverlay: () => (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100%",
-                gap: 2,
-              }}
-            >
-              <span>Nenhum paciente encontrado</span>
-            </Box>
-          ),
-        }}
-        slotProps={{
-          loadingOverlay: {
-            variant: "skeleton",
-            noRowsVariant: "skeleton",
-          },
-        }}
-        sx={{
-          ".MuiDataGrid-cell, .MuiDataGrid-columnHeader": {
-            px: 3,
-          },
-          borderRadius: 4,
-          boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.20)",
-          backgroundColor: "white",
-        }}
-        rows={patients}
-        columns={columns}
-        disableMultipleRowSelection
-        rowHeight={80}
-        columnHeaderHeight={80}
-        disableRowSelectionOnClick
-        autoPageSize
-      />
-      <Modal
-        open={openModal}
-        modalTrigger={setOpenModal}
-        title="Excluir paciente"
-        content="Você não terá mais acesso ao paciente, você quer mesmo excluí-lo?"
-        confirmButtonText="Sim, excluir"
-        confirmButtonAction={() => handleDelete()}
-      />
+      <Grid.Root columns={columns} rows={patients} loading={loadingGrid} />
+
+      <Modal.Root open={openModal}>
+        <Modal.Title closeTrigger={() => setOpenModal(false)}>
+          Excluir paciente
+        </Modal.Title>
+        <Modal.Content>
+          Você não terá mais acesso ao paciente, você quer mesmo excluí-lo?
+        </Modal.Content>
+        <Modal.Action>
+          <OutlinedButton
+            onClick={() => setOpenModal(false)}
+            sx={{
+              px: 1.5,
+              color: "black",
+              borderColor: "grey.300",
+
+              "&:hover": {
+                backgroundColor: "grey.100",
+                borderColor: "grey.300",
+              },
+            }}
+          >
+            Cancelar
+          </OutlinedButton>
+          <FilledButton color="error" sx={{ px: 1.5 }} onClick={handleDelete}>
+            Sim, excluir
+          </FilledButton>
+        </Modal.Action>
+      </Modal.Root>
     </Box>
   );
 }

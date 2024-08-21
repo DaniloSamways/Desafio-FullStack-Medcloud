@@ -4,28 +4,38 @@ import { FilledButton } from "@/components/Buttons/FilledButton";
 import { Footer } from "@/components/Footer";
 import PatientForm from "@/components/Form/PatientForm";
 import { PageTitle } from "@/components/PageTitle";
-import { CreatePatientSchema, createPatientSchema } from "@/models/Patient";
-import { addPatient } from "@/store";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { CreatePatientSchema, Patient } from "@/models/Patient";
+import { updatePatient } from "@/store";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-export default function NewPatient() {
+export function Client({ patient }: { patient: Patient }) {
   const {
     register,
     handleSubmit,
     trigger,
     formState: { errors },
-    control,
   } = useForm<CreatePatientSchema>({
-    resolver: zodResolver(createPatientSchema),
+    defaultValues: {
+      name: patient.name,
+      email: patient.email,
+      cpf: patient.cpf,
+      birth_date: patient.birth_date,
+      city: patient.address.city,
+      district: patient.address.district,
+      number: patient.address.number,
+      street: patient.address.street,
+      zip_code: patient.address.zip_code,
+      state: patient.address.state,
+      country: patient.address.country,
+    },
   });
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<CreatePatientSchema> = async (data: CreatePatientSchema) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const payload = {
       ...data,
       address: {
@@ -36,18 +46,20 @@ export default function NewPatient() {
         zip_code: data.zip_code,
         state: data.state,
         country: data.country,
-      }
-    }
-
-    const response = await fetch("http://localhost:3000/patients", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
-    }).then((res) => res.json());
+    };
 
-    dispatch(addPatient(response));
+    const response = await fetch(
+      `http://localhost:3000/patients/${patient.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    ).then((res) => res.json());
+    dispatch(updatePatient(data));
     router.push("/");
   };
 
@@ -73,7 +85,7 @@ export default function NewPatient() {
           gap: 2,
         }}
       >
-        <PageTitle>Cadastrar paciente</PageTitle>
+        <PageTitle>Editar paciente</PageTitle>
         <PatientForm
           register={register}
           errors={errors}
@@ -99,7 +111,7 @@ export default function NewPatient() {
           Cancelar
         </FilledButton>
         <FilledButton color="secondary" onClick={handleSave}>
-          Cadastrar
+          Salvar
         </FilledButton>
       </Footer>
     </>
