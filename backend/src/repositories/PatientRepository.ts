@@ -9,8 +9,14 @@ export class PatientRepository {
   async createPatient(data: CreatePatientInput): Promise<Patient> {
     const createdPatient = await pg
       .query<Patient>(
-        "INSERT INTO patient (name, email, cpf, birth_date, address) VALUES ($1, $2, $3, $4) RETURNING *",
-        [data.name, data.email, data.cpf, data.birth_date, JSON.stringify(data.address)]
+        "INSERT INTO patient (name, email, cpf, birth_date, address) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        [
+          data.name,
+          data.email,
+          data.cpf,
+          data.birth_date,
+          JSON.stringify(data.address),
+        ]
       )
       ?.then((res) => {
         return res.rows[0];
@@ -34,15 +40,17 @@ export class PatientRepository {
   }
 
   async updatePatient(id: string, data: UpdatePatientInput): Promise<Patient> {
+    console.log(data)
     const updateFields = Object.keys(data).map((key, index) => {
-      if (key === "address") {
-        `${key} = ${key}::jsonb || ${JSON.stringify(data[key])} `;
-        // remove address property from data
+      if (!key) return;
 
-        return;
+      if (key === "address") {
+        const address = data[key];
+        delete data["address"];
+        return `${key} = ${key}::jsonb || '${JSON.stringify(address)}' `;
       }
 
-      return `${key} = ${index + 2} `;
+      return `${key} = $${index + 2} `;
     });
 
     const updatedPatient = await pg

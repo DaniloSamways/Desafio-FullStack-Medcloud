@@ -9,7 +9,19 @@ export const createPatientSchema = z.object({
     .string({ message: "Nome é obrigatório" })
     .min(5, "Nome deve ter no mínimo 5 caracteres")
     .max(255, "Nome deve ter no máximo 255 caracteres"),
-  birth_date: z.date({ message: "Data de Nascimento é obrigatório" }),
+  birth_date: z.preprocess(
+    (birth_date: unknown) => {
+      const date = new Date(birth_date as string);
+      if (isNaN(date.getTime())) {
+        return { message: "Data de Nascimento inválida" };
+      }
+      return date;
+    },
+    z.date({
+      invalid_type_error: "Data de Nascimento inválida",
+      required_error: "Data de Nascimento é obrigatória",
+    })
+  ),
   email: z.string({ message: "Email é obrigatório" }).email("Email inválido"),
   address: z.object(
     {
@@ -52,18 +64,23 @@ export const createPatientSchema = z.object({
 export const updatePatientSchema = z.object({
   cpf: z.string().optional(),
   name: z.string().optional(),
-  birth_date: z.string().optional(),
+  birth_date: z.preprocess(
+    (birth_date: unknown) => new Date(birth_date as string),
+    z.date().optional()
+  ),
   email: z.string().email("Email inválido").optional(),
-  address: z.object({
-    zip_code: z.string().optional(),
-    street: z.string().optional(),
-    number: z.string().optional(),
-    complement: z.string().optional(),
-    district: z.string().optional(),
-    city: z.string().optional(),
-    state: z.string().max(2).optional(),
-    country: z.string().optional(),
-  }),
+  address: z
+    .object({
+      zip_code: z.string().optional(),
+      street: z.string().optional(),
+      number: z.string().optional(),
+      complement: z.string().optional(),
+      district: z.string().optional(),
+      city: z.string().optional(),
+      state: z.string().max(2).optional(),
+      country: z.string().optional(),
+    })
+    .optional(),
 });
 
 export type CreatePatientInput = z.infer<typeof createPatientSchema>;

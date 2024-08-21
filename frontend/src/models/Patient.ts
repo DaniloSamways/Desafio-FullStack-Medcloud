@@ -27,7 +27,19 @@ export const createPatientSchema = z.object({
     .string({ message: "Nome é obrigatório" })
     .min(5, "Nome deve ter no mínimo 5 caracteres")
     .max(255, "Nome deve ter no máximo 255 caracteres"),
-  birth_date: z.date({ message: "Data de Nascimento é obrigatório" }),
+  birth_date: z.preprocess(
+    (birth_date: unknown) => {
+      const date = new Date(birth_date as string);
+      if (isNaN(date.getTime())) {
+        return { message: "Data de Nascimento inválida" };
+      }
+      return date;
+    },
+    z.date({
+      invalid_type_error: "Data de Nascimento inválida",
+      required_error: "Data de Nascimento é obrigatória",
+    })
+  ),
   email: z.string({ message: "Email é obrigatório" }).email("Email inválido"),
   zip_code: z.preprocess(
     (zip_code: unknown) => (zip_code as string).replace(/\D/g, ""),

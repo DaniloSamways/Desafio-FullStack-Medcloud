@@ -17,8 +17,7 @@ export default function NewPatient() {
     register,
     handleSubmit,
     trigger,
-    formState: { errors },
-    control,
+    formState: { errors }
   } = useForm<CreatePatientSchema>({
     resolver: zodResolver(createPatientSchema),
   });
@@ -28,29 +27,38 @@ export default function NewPatient() {
   const onSubmit: SubmitHandler<CreatePatientSchema> = async (
     data: CreatePatientSchema
   ) => {
-    const payload = {
-      ...data,
-      address: {
-        city: data.city,
-        district: data.district,
-        number: data.number,
-        street: data.street,
-        zip_code: data.zip_code,
-        state: data.state,
-        country: data.country,
-      },
-    };
+    try {
+      const payload = {
+        ...data,
+        address: {
+          city: data.city,
+          district: data.district,
+          number: data.number,
+          street: data.street,
+          zip_code: data.zip_code,
+          state: data.state,
+          country: data.country,
+        },
+      };
 
-    const response = await fetch("http://localhost:3000/patients", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    }).then((res) => res.json());
+      const response = await fetch("http://localhost:3000/patients", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }).then(async (res) => {
+        if (!res.ok) {
+          throw await res.json();
+        }
+        return res.json();
+      });
 
-    dispatch(addPatient(response));
-    router.push("/");
+      dispatch(addPatient(response));
+      router.push("/");
+    } catch (err) {
+      alert(JSON.stringify(err));
+    }
   };
 
   const handleSave = async () => {

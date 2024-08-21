@@ -7,9 +7,9 @@ export class PatientController {
 
   async createPatient(req: Request, res: Response, next: NextFunction) {
     try {
-      createPatientSchema.parse(req.body);
+      const requestData = createPatientSchema.parse(req.body);
 
-      const createdPatient = await this.service.createPatient(req.body);
+      const createdPatient = await this.service.createPatient(requestData);
       return res.status(201).json(createdPatient);
     } catch (error: any) {
       next(error);
@@ -37,10 +37,10 @@ export class PatientController {
 
   async updatePatient(req: Request, res: Response, next: NextFunction) {
     try {
-      updatePatientSchema.parse(req.body);
+      const requestData = updatePatientSchema.parse(req.body);
 
       const id = req.params.id;
-      const updatedPatient = await this.service.updatePatient(id, req.body);
+      const updatedPatient = await this.service.updatePatient(id, requestData);
       return res.status(201).json(updatedPatient);
     } catch (error: any) {
       console.log(error);
