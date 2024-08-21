@@ -4,7 +4,7 @@ import { Box, IconButton } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Patient } from "@/models/Patient";
 import { deletePatient, setPatients } from "@/store";
@@ -73,7 +73,7 @@ export function PatientsGrid() {
     },
   ];
 
-  const fetchPatients = async () => {
+  const fetchPatients = useCallback(async () => {
     try {
       const res = await fetch(`${apiUrl}/patients`);
       const response = await res.json();
@@ -83,7 +83,7 @@ export function PatientsGrid() {
     } finally {
       setLoadingGrid(false);
     }
-  };
+  }, [dispatch, apiUrl]);
 
   const handleDelete = async () => {
     try {
@@ -101,7 +101,7 @@ export function PatientsGrid() {
 
   useEffect(() => {
     fetchPatients();
-  }, [dispatch]);
+  }, [dispatch, fetchPatients]);
 
   return (
     <Box

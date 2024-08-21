@@ -19,6 +19,7 @@ export function InputField({ register, ...rest }: InputFieldProps) {
             color: "grey.800",
             fontWeight: "bold",
           },
+          ...rest.sx,
         }}
       />
     </>
