@@ -20,8 +20,8 @@ export function PatientsGrid() {
   );
 
   const dispatch = useDispatch();
-  const patients = useSelector((state: Patient[]) => {
-    return state;
+  const patients = useSelector((state: { patients: Patient[] }) => {
+    return state.patients;
   });
 
   const columns: GridColDef[] = [
@@ -56,7 +56,11 @@ export function PatientsGrid() {
           <IconButton>
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => (setOpenModal(true), setSelectedPatientId(val.row.id))}>
+          <IconButton
+            onClick={() => (
+              setOpenModal(true), setSelectedPatientId(val.row.id)
+            )}
+          >
             <DeleteIcon />
           </IconButton>
         </Box>

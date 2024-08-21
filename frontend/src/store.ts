@@ -37,8 +37,7 @@ const patientsSlice = createSlice({
       }
     },
     deletePatient: (state: Patient[], action) => {
-      state = state.filter((patient) => patient.id !== action.payload);
-      return;
+      return state.filter((patient) => patient.id !== action.payload);
     },
   },
 });
@@ -47,5 +46,7 @@ export const { addPatient, deletePatient, setPatients, updatePatient } =
   patientsSlice.actions;
 
 export const patientsStore = configureStore({
-  reducer: patientsSlice.reducer,
+  reducer: {
+    patients: patientsSlice.reducer,
+  },
 });
