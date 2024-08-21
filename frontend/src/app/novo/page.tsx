@@ -9,7 +9,7 @@ import { addPatient } from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 export default function NewPatient() {
@@ -25,7 +25,9 @@ export default function NewPatient() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<CreatePatientSchema> = async (data: CreatePatientSchema) => {
+  const onSubmit: SubmitHandler<CreatePatientSchema> = async (
+    data: CreatePatientSchema
+  ) => {
     const payload = {
       ...data,
       address: {
@@ -36,8 +38,8 @@ export default function NewPatient() {
         zip_code: data.zip_code,
         state: data.state,
         country: data.country,
-      }
-    }
+      },
+    };
 
     const response = await fetch("http://localhost:3000/patients", {
       method: "POST",
