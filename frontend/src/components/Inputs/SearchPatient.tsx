@@ -1,6 +1,7 @@
 import { Box, InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {  UseFormRegisterReturn } from "react-hook-form";
+import { UseFormRegisterReturn } from "react-hook-form";
+import { InputField } from "../Input/InputField";
 
 interface SearchInputProps {
   register: UseFormRegisterReturn<any>;
@@ -26,7 +27,7 @@ export function SearchInput({ register }: SearchInputProps) {
           color: "grey.500",
         }}
       />
-      <InputBase {...register} sx={{ flex: 1 }} />
+      <InputField register={() => register} sx={{ flex: 1, mt: 0 }} />
     </Box>
   );
 }
