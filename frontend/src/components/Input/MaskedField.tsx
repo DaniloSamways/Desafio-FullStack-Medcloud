@@ -30,6 +30,7 @@ export function MaskedField({ mask, register, ...rest }: MaskedFieldProps) {
   return (
     <>
       <InputBase
+        placeholder={rest.placeholder}
         {...register}
         inputComponent={CustomMaskedInput}
         sx={{

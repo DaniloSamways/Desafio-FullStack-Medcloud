@@ -11,9 +11,12 @@ import dayjs from "@/dayjsConfig";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
 
 export function Client({ patient }: { patient: Patient }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const { enqueueSnackbar } = useSnackbar();
   const formMethods = useForm<CreatePatientSchema>({
     defaultValues: {
       name: patient.name,
@@ -39,35 +42,42 @@ export function Client({ patient }: { patient: Patient }) {
   const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (data.birth_date) {
-      data.birth_date = dayjs
-        .tz(data.birth_date, "America/Sao_Paulo")
-        .format("YYYY-MM-DD");
+    try {
+      if (data.birth_date) {
+        data.birth_date = dayjs
+          .tz(data.birth_date, "America/Sao_Paulo")
+          .format("YYYY-MM-DD");
+      }
+
+      const payload = {
+        ...data,
+        address: {
+          city: data.city,
+          district: data.district,
+          number: data.number,
+          street: data.street,
+          zip_code: data.zip_code,
+          state: data.state,
+          country: data.country,
+          complement: data.complement,
+        },
+      };
+
+      await fetch(`http://${apiUrl}/patients/${patient.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }).then((res) => res.json());
+      dispatch(updatePatient(data));
+      router.push("/");
+    } catch (err) {
+      enqueueSnackbar("Verifique todos os campos", {
+        variant: "error",
+      });
+      console.error(JSON.stringify(err));
     }
-
-    const payload = {
-      ...data,
-      address: {
-        city: data.city,
-        district: data.district,
-        number: data.number,
-        street: data.street,
-        zip_code: data.zip_code,
-        state: data.state,
-        country: data.country,
-        complement: data.complement,
-      },
-    };
-
-    await fetch(`http://${apiUrl}/patients/${patient.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    }).then((res) => res.json());
-    dispatch(updatePatient(data));
-    router.push("/");
   };
 
   const handleSave = async () => {

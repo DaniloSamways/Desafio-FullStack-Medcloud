@@ -11,9 +11,7 @@ import { useForm } from "react-hook-form";
 export default function Home() {
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data: any) => {
-    alert(JSON.stringify(data));
-  };
+  const onSubmit = (data: any) => {};
 
   return (
     <Box

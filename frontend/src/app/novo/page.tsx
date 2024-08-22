@@ -9,14 +9,15 @@ import { addPatient } from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useSnackbar } from "notistack";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 export default function NewPatient() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const formMethods = useForm<CreatePatientSchema>({
     resolver: zodResolver(createPatientSchema),
   });
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const {
     handleSubmit,
     trigger,
@@ -24,6 +25,7 @@ export default function NewPatient() {
   } = formMethods;
   const router = useRouter();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit: SubmitHandler<CreatePatientSchema> = async (
     data: CreatePatientSchema
@@ -59,7 +61,10 @@ export default function NewPatient() {
       dispatch(addPatient(response));
       router.push("/");
     } catch (err) {
-      alert(JSON.stringify(err));
+      enqueueSnackbar("Erro ao cadastrar paciente", {
+        variant: "error",
+      });
+      console.error(JSON.stringify(err));
     }
   };
 

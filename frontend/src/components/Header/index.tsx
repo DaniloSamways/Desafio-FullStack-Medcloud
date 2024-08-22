@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { Calendar } from "./Calendar";
 import Link from "next/link";
 import Logo from "@/assets/logo.png";
@@ -9,6 +9,7 @@ export function Header() {
     <Box
       component={"header"}
       sx={{
+        minHeight: "50px",
         display: "flex",
         position: "relative",
         alignItems: "center",
