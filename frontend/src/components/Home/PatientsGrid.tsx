@@ -18,6 +18,11 @@ import dayjs from "@/dayjsConfig";
 export function PatientsGrid() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+  const [rowCount, setRowCount] = useState(0);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
   const [openModal, setOpenModal] = useState(false);
   const [loadingGrid, setLoadingGrid] = useState(true);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(
@@ -39,7 +44,9 @@ export function PatientsGrid() {
       flex: 1,
       minWidth: 200,
       valueGetter: (value) =>
-        new Date(dayjs.tz(value, "America/Sao_Paulo").toString()).toLocaleDateString("pt-BR", {
+        new Date(
+          dayjs.tz(value, "America/Sao_Paulo").toString()
+        ).toLocaleDateString("pt-BR", {
           day: "numeric",
           month: "long",
           year: "numeric",
@@ -59,7 +66,9 @@ export function PatientsGrid() {
             gap: 2,
           }}
         >
-          <IconButton onClick={() => router.push(`/editar/${val.row.id}?t=${Date.now()}`)}>
+          <IconButton
+            onClick={() => router.push(`/editar/${val.row.id}?t=${Date.now()}`)}
+          >
             <EditIcon />
           </IconButton>
           <IconButton
@@ -74,17 +83,25 @@ export function PatientsGrid() {
     },
   ];
 
-  const fetchPatients = useCallback(async () => {
-    try {
-      const res = await fetch(`${apiUrl}/patients`);
-      const response = await res.json();
-      dispatch(setPatients(response));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoadingGrid(false);
-    }
-  }, [dispatch, apiUrl]);
+  const fetchPatients = useCallback(
+    async (page: number = 1, pageSize: number = 10) => {
+      try {
+        const res = await fetch(
+          `${apiUrl}/patients?page=${page}&limit=${pageSize}`
+        );
+        const response = await res.json();
+        setPaginationModel({ page, pageSize });
+        dispatch(setPatients(response.data));
+        setRowCount(response.total);
+      } catch (error) {
+        dispatch(setPatients([]));
+        console.error(error);
+      } finally {
+        setLoadingGrid(false);
+      }
+    },
+    [dispatch, apiUrl]
+  );
 
   const handleDelete = async () => {
     try {
@@ -110,7 +127,18 @@ export function PatientsGrid() {
         height: "100%",
       }}
     >
-      <Grid.Root columns={columns} rows={patients} loading={loadingGrid} />
+      <Grid.Root
+        paginationMode="server"
+        pageSizeOptions={[10]}
+        columns={columns}
+        rowCount={rowCount}
+        rows={patients}
+        loading={loadingGrid}
+        paginationModel={paginationModel}
+        onPaginationModelChange={(params) => {
+          fetchPatients(params.page, params.pageSize);
+        }}
+      />
 
       <Modal.Root open={openModal}>
         <Modal.Title closeTrigger={() => setOpenModal(false)}>

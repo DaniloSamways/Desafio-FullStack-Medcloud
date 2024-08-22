@@ -2,9 +2,10 @@ import { redirect } from "next/navigation";
 import { Client } from "./Client";
 
 async function fetchPatient(id: string) {
-  const response = await fetch(`http://localhost:3000/patients/${id}`, {
-    cache: "no-store"
-  })
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(`http://${apiUrl}/patients/${id}`, {
+    cache: "no-store",
+  });
   if (!response.ok) {
     return null;
   }
@@ -20,10 +21,8 @@ export default async function EditPatient({
   const patient = await fetchPatient(id);
 
   if (!patient) {
-     return redirect("/");
+    return redirect("/");
   }
 
-  return (
-    <Client patient={patient} />
-  );
+  return <Client patient={patient} />;
 }

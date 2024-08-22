@@ -3,7 +3,7 @@ import { Grid } from "@/components/Grid/";
 
 interface GridRootProps extends DataGridProps {}
 
-export function GridRoot({ loading = true,...rest }: GridRootProps) {
+export function GridRoot({ loading = true, ...rest }: GridRootProps) {
   return (
     <DataGrid
       {...rest}
@@ -31,7 +31,7 @@ export function GridRoot({ loading = true,...rest }: GridRootProps) {
       rowHeight={80}
       columnHeaderHeight={80}
       disableRowSelectionOnClick
-      autoPageSize
+      // autoPageSize
     />
   );
 }

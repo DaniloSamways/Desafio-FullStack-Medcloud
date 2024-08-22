@@ -16,6 +16,7 @@ export default function NewPatient() {
   const formMethods = useForm<CreatePatientSchema>({
     resolver: zodResolver(createPatientSchema),
   });
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const {
     handleSubmit,
     trigger,
@@ -38,11 +39,11 @@ export default function NewPatient() {
           zip_code: data.zip_code,
           state: data.state,
           country: data.country,
-          complement: data.complement
+          complement: data.complement,
         },
       };
 
-      const response = await fetch("http://localhost:3000/patients", {
+      const response = await fetch(`http://${apiUrl}/patients`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
