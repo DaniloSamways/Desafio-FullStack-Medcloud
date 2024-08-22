@@ -4,7 +4,7 @@ export interface Patient {
   id: string;
   cpf: string;
   name: string;
-  birth_date: string;
+  birth_date: Date;
   email: string;
   address: {
     zip_code: string;

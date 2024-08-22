@@ -13,14 +13,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 export default function NewPatient() {
-  const {
-    register,
-    handleSubmit,
-    trigger,
-    formState: { errors }
-  } = useForm<CreatePatientSchema>({
+  const formMethods = useForm<CreatePatientSchema>({
     resolver: zodResolver(createPatientSchema),
   });
+  const {
+    handleSubmit,
+    trigger,
+    formState: { errors },
+  } = formMethods;
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -85,7 +85,7 @@ export default function NewPatient() {
       >
         <PageTitle>Cadastrar paciente</PageTitle>
         <PatientForm
-          register={register}
+          methods={formMethods}
           errors={errors}
           onSubmit={handleSubmit(onSubmit)}
         />

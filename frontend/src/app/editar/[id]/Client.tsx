@@ -7,22 +7,18 @@ import { PageTitle } from "@/components/PageTitle";
 import { CreatePatientSchema, Patient } from "@/models/Patient";
 import { updatePatient } from "@/store";
 import { Box } from "@mui/material";
+import dayjs from "@/dayjsConfig";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 export function Client({ patient }: { patient: Patient }) {
-  const {
-    register,
-    handleSubmit,
-    trigger,
-    formState: { errors },
-  } = useForm<CreatePatientSchema>({
+  const formMethods = useForm<CreatePatientSchema>({
     defaultValues: {
       name: patient.name,
       email: patient.email,
       cpf: patient.cpf,
-      birth_date: patient.birth_date,
+      birth_date: patient.birth_date || null,
       city: patient.address.city,
       district: patient.address.district,
       number: patient.address.number,
@@ -32,10 +28,19 @@ export function Client({ patient }: { patient: Patient }) {
       country: patient.address.country,
     },
   });
+  const {
+    handleSubmit,
+    trigger,
+    formState: { errors },
+  } = formMethods
   const router = useRouter();
   const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (data.birth_date) {
+      data.birth_date = dayjs.tz(data.birth_date, "America/Sao_Paulo").format("YYYY-MM-DD");
+    }
+
     const payload = {
       ...data,
       address: {
@@ -49,7 +54,7 @@ export function Client({ patient }: { patient: Patient }) {
       },
     };
 
-    const response = await fetch(
+    await fetch(
       `http://localhost:3000/patients/${patient.id}`,
       {
         method: "PUT",
@@ -87,7 +92,7 @@ export function Client({ patient }: { patient: Patient }) {
       >
         <PageTitle>Editar paciente</PageTitle>
         <PatientForm
-          register={register}
+          methods={formMethods}
           errors={errors}
           onSubmit={handleSubmit(onSubmit)}
         />

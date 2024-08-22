@@ -18,7 +18,7 @@ const patientsSlice = createSlice({
         country: "Brasil",
       },
       email: "email@teste.com",
-      birth_date: "2005-12-27",
+      birth_date: new Date("2005-12-27"),
     },
   ],
   reducers: {

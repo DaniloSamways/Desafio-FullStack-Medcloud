@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, IconButton } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useCallback, useEffect, useState } from "react";
@@ -13,6 +13,7 @@ import { OutlinedButton } from "../Buttons/OutlinedButton";
 import { FilledButton } from "../Buttons/FilledButton";
 import { useRouter } from "next/navigation";
 import { Grid } from "@/components/Grid";
+import dayjs from "@/dayjsConfig";
 
 export function PatientsGrid() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -38,7 +39,7 @@ export function PatientsGrid() {
       flex: 1,
       minWidth: 200,
       valueGetter: (value) =>
-        new Date(value).toLocaleDateString("pt-BR", {
+        new Date(dayjs.tz(value, "America/Sao_Paulo").toString()).toLocaleDateString("pt-BR", {
           day: "numeric",
           month: "long",
           year: "numeric",

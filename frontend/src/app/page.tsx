@@ -3,7 +3,7 @@
 import { FilledButton } from "@/components/Buttons/FilledButton";
 import { CreatePatientBox } from "@/components/Home/CreatePatientBox";
 import { PatientsGrid } from "@/components/Home/PatientsGrid";
-import { SearchInput } from "@/components/Inputs/SearchPatient";
+import { SearchInput } from "@/components/Input/SearchPatient";
 import { PageTitle } from "@/components/PageTitle";
 import { Box } from "@mui/material";
 import { useForm } from "react-hook-form";
