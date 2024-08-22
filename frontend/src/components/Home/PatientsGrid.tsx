@@ -21,7 +21,7 @@ export function PatientsGrid() {
   const [rowCount, setRowCount] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 5,
+    pageSize: 7,
   });
   const [openModal, setOpenModal] = useState(false);
   const [loadingGrid, setLoadingGrid] = useState(true);
@@ -84,10 +84,10 @@ export function PatientsGrid() {
   ];
 
   const fetchPatients = useCallback(
-    async (page: number = 1, pageSize: number = 10) => {
+    async (page: number = 0, pageSize: number = 7) => {
       try {
         const res = await fetch(
-          `${apiUrl}/patients?page=${page}&limit=${pageSize}`
+          `${apiUrl}/patients?page=${page+1}&limit=${pageSize}`
         );
         const response = await res.json();
         setPaginationModel({ page, pageSize });
@@ -109,7 +109,7 @@ export function PatientsGrid() {
         method: "DELETE",
       });
       dispatch(deletePatient(selectedPatientId));
-      fetchPatients();
+      fetchPatients(paginationModel.page, paginationModel.pageSize);
     } catch (error) {
       console.error(error);
     } finally {
@@ -129,7 +129,7 @@ export function PatientsGrid() {
     >
       <Grid.Root
         paginationMode="server"
-        pageSizeOptions={[10]}
+        pageSizeOptions={[paginationModel.pageSize]}
         columns={columns}
         rowCount={rowCount}
         rows={patients}

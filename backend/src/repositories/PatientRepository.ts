@@ -28,7 +28,7 @@ export class PatientRepository {
   }
 
   async getPatients(data: PaginationSchema): Promise<getPatientsResponse> {
-    let query = "SELECT * FROM patient ORDER BY id";
+    let query = "SELECT * FROM patient ORDER BY createdAt DESC";
 
     if (data) {
       query += ` LIMIT ${data.limit} OFFSET ${(data.page - 1) * data.limit}`;
