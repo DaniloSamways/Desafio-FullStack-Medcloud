@@ -2,7 +2,9 @@ import { redirect } from "next/navigation";
 import { Client } from "./Client";
 
 async function fetchPatient(id: string) {
-  const response = await fetch(`http://localhost:3000/patients/${id}`);
+  const response = await fetch(`http://localhost:3000/patients/${id}`, {
+    cache: "no-store"
+  })
   if (!response.ok) {
     return null;
   }

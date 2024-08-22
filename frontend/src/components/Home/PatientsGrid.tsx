@@ -59,7 +59,7 @@ export function PatientsGrid() {
             gap: 2,
           }}
         >
-          <IconButton onClick={() => router.push(`/editar/${val.row.id}`)}>
+          <IconButton onClick={() => router.push(`/editar/${val.row.id}?t=${Date.now()}`)}>
             <EditIcon />
           </IconButton>
           <IconButton
