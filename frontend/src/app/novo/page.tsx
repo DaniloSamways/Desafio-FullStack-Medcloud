@@ -38,6 +38,7 @@ export default function NewPatient() {
           zip_code: data.zip_code,
           state: data.state,
           country: data.country,
+          complement: data.complement
         },
       };
 

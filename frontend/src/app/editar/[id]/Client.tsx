@@ -26,6 +26,7 @@ export function Client({ patient }: { patient: Patient }) {
       zip_code: patient.address.zip_code,
       state: patient.address.state,
       country: patient.address.country,
+      complement: patient.address.complement
     },
   });
   const {
@@ -51,6 +52,7 @@ export function Client({ patient }: { patient: Patient }) {
         zip_code: data.zip_code,
         state: data.state,
         country: data.country,
+        complement: data.complement
       },
     };
 

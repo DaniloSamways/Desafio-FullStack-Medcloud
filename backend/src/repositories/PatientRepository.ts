@@ -40,7 +40,6 @@ export class PatientRepository {
   }
 
   async updatePatient(id: string, data: UpdatePatientInput): Promise<Patient> {
-    console.log(data)
     const updateFields = Object.keys(data).map((key, index) => {
       if (!key) return;
 
