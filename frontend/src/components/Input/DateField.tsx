@@ -6,6 +6,9 @@ import dayjs from "@/dayjsConfig";
 
 interface DateFieldProps extends DatePickerProps<any> {}
 
+const TextFowardRef = forwardRef((props, ref) => <TextField {...props} />);
+TextFowardRef.displayName = "TextFowardRef";
+
 export function DateField({ ...rest }: DateFieldProps) {
   const { control } = useFormContext();
   return (
@@ -24,7 +27,7 @@ export function DateField({ ...rest }: DateFieldProps) {
           value={field.value}
           format="DD/MM/YYYY"
           slots={{
-            textField: forwardRef((props, ref) => <TextField {...props} />),
+            textField: TextFowardRef,
           }}
           sx={{
             fontSize: "inherit",

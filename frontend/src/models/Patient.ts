@@ -32,6 +32,7 @@ export const createPatientSchema = z.object({
     }),
   birth_date: z.preprocess(
     (birth_date: unknown) => {
+      if (!birth_date) return { message: "Data de Nascimento inválida" };
       const date = new Date(birth_date as string);
       if (isNaN(date.getTime())) {
         return { message: "Data de Nascimento inválida" };

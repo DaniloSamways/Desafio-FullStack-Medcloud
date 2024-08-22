@@ -1,4 +1,4 @@
-import { Divider, Grid } from "@mui/material";
+import { Divider, Grid, Input } from "@mui/material";
 import {
   FieldErrors,
   FieldValues,
@@ -9,6 +9,7 @@ import {
 import { FormEventHandler } from "react";
 import { Form } from ".";
 import { CreatePatientSchema } from "@/models/Patient";
+import { IMaskInput } from "react-imask";
 
 interface PatientFormProps {
   methods: UseFormReturn<CreatePatientSchema, any, undefined>;
@@ -45,7 +46,8 @@ export default function PatientForm({
               name={"birth_date"}
               errorMessage={errors.birth_date?.message as string}
             />
-            <Form.Input
+            <Form.InputMasked
+              mask="000.000.000-00"
               label="CPF"
               register={register("cpf")}
               errorMessage={errors.cpf?.message as string}
@@ -55,7 +57,8 @@ export default function PatientForm({
         <Divider />
         <Form.Content>
           <Grid container spacing={4}>
-            <Form.Input
+            <Form.InputMasked
+              mask="00000-000"
               register={register("zip_code")}
               errorMessage={errors.zip_code?.message as string}
               label="CEP"
@@ -85,7 +88,9 @@ export default function PatientForm({
               errorMessage={errors.city?.message as string}
               label="Cidade"
             />
-            <Form.Input
+            <Form.InputMasked
+              mask="aa"
+              prepare={(str) => str.toUpperCase()}
               register={register("state")}
               errorMessage={errors.state?.message as string}
               label="UF"
