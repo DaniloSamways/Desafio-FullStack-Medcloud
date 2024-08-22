@@ -45,7 +45,7 @@ export default function NewPatient() {
         },
       };
 
-      const response = await fetch(`http://${apiUrl}/patients`, {
+      const response = await fetch(`${apiUrl}/patients`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

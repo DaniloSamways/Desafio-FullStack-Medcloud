@@ -56,14 +56,14 @@ export function Client({ patient }: { patient: Patient }) {
           district: data.district,
           number: data.number,
           street: data.street,
-          zip_code: data.zip_code,
+          zip_code: data.zip_code.replace(/\D/g, ""),
           state: data.state,
           country: data.country,
           complement: data.complement,
         },
       };
 
-      await fetch(`http://${apiUrl}/patients/${patient.id}`, {
+      await fetch(`${apiUrl}/patients/${patient.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

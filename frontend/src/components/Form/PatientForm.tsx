@@ -1,15 +1,12 @@
-import { Divider, Grid, Input } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import {
   FieldErrors,
-  FieldValues,
   FormProvider,
-  UseFormRegister,
   UseFormReturn,
 } from "react-hook-form";
 import { FormEventHandler } from "react";
 import { Form } from ".";
 import { CreatePatientSchema } from "@/models/Patient";
-import { IMaskInput } from "react-imask";
 
 interface PatientFormProps {
   methods: UseFormReturn<CreatePatientSchema, any, undefined>;

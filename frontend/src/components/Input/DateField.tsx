@@ -20,11 +20,13 @@ export function DateField({ ...rest }: DateFieldProps) {
         <DatePicker
           name={field.name}
           onChange={(val) => {
-            if (val.day() && val.month() && val.year().toString().length == 4) {
+            if (
+              val?.day()?.toString() && val?.month()?.toString() && val?.year().toString().length == 4
+            ) {
               field.onChange(val);
             }
           }}
-          value={field.value}
+          value={dayjs.tz(field.value, "America/Sao_Paulo")}
           format="DD/MM/YYYY"
           slots={{
             textField: TextFowardRef,

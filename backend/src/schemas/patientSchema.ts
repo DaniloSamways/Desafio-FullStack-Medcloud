@@ -65,7 +65,10 @@ export const createPatientSchema = z.object({
 });
 
 export const updatePatientSchema = z.object({
-  cpf: z.string().optional(),
+  cpf: z.preprocess(
+    (cpf: unknown) => (cpf as string).replace(/\D/g, ""),
+    z.string().optional()
+  ),
   name: z.string().optional(),
   birth_date: z.preprocess(
     (birth_date: unknown) => new Date(birth_date as string),
@@ -74,7 +77,10 @@ export const updatePatientSchema = z.object({
   email: z.string().email("Email inválido").optional(),
   address: z
     .object({
-      zip_code: z.string().optional(),
+      zip_code: z.preprocess(
+        (zip_code: unknown) => (zip_code as string).replace(/\D/g, ""),
+        z.string().optional()
+      ),
       street: z.string().optional(),
       number: z.string().optional(),
       complement: z.string().optional(),

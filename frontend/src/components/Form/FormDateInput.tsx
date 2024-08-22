@@ -47,8 +47,8 @@ export function FormDateInput({
           </Typography>
           <DateField
             name={name}
-            // maxDate={new Date()}
-            // defaultValue={value ? dayjs.tz(value, "America/Sao_Paulo") : null}
+            maxDate={new Date()}
+            defaultValue={value ? dayjs.tz(value, "America/Sao_Paulo") : null}
             sx={{
               fontSize: 14,
               color: "grey.800",

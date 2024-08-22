@@ -4,7 +4,7 @@ import { Client } from "./Client";
 async function fetchPatient(id: string) {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const response = await fetch(`http://${apiUrl}/patients/${id}`, {
+    const response = await fetch(`${apiUrl}/patients/${id}`, {
       cache: "no-store",
     });
     if (!response.ok) {
