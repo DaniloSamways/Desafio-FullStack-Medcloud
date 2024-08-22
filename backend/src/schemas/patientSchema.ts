@@ -8,7 +8,10 @@ export const createPatientSchema = z.object({
   name: z
     .string({ message: "Nome é obrigatório" })
     .min(5, "Nome deve ter no mínimo 5 caracteres")
-    .max(255, "Nome deve ter no máximo 255 caracteres"),
+    .max(255, "Nome deve ter no máximo 255 caracteres")
+    .refine((name) => name.trim().includes(" "), {
+      message: "Nome completo é obrigatório",
+    }),
   birth_date: z.preprocess(
     (birth_date: unknown) => {
       const date = new Date(birth_date as string);
