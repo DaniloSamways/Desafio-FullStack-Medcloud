@@ -12,17 +12,19 @@ export function DateField({ ...rest }: DateFieldProps) {
     <Controller
       name={rest.name!}
       control={control}
+      defaultValue={null}
       render={({ field }) => (
         <DatePicker
-          {...field}
-          onChange={(date) => field.onChange(date)}
-          value={field.value ? dayjs.tz(field.value, "America/Sao_Paulo") : null}
-          label=""
+          name={field.name}
+          onChange={(val) => {
+            if (val.day() && val.month() && val.year().toString().length == 4) {
+              field.onChange(val);
+            }
+          }}
+          value={field.value}
           format="DD/MM/YYYY"
           slots={{
-            textField: forwardRef((props, ref) => (
-              <TextField {...props} />
-            )),
+            textField: forwardRef((props, ref) => <TextField {...props} />),
           }}
           sx={{
             fontSize: "inherit",

@@ -46,17 +46,16 @@ export function FormDateInput({
             {label}
           </Typography>
           <DateField
-            views={["day", "month", "year"]}
-            maxDate={new Date()}
             name={name}
-            defaultValue={value ? dayjs.tz(value, "America/Sao_Paulo") : null}
+            // maxDate={new Date()}
+            // defaultValue={value ? dayjs.tz(value, "America/Sao_Paulo") : null}
             sx={{
               fontSize: 14,
               color: "grey.800",
               "& .MuiInputLabel-root": {
                 color: "grey.500",
                 fontWeight: "bold",
-              }
+              },
             }}
           />
         </Box>
