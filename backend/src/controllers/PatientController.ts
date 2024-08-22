@@ -1,4 +1,8 @@
-import { createPatientSchema, updatePatientSchema } from "../models/Patient";
+import { paginationSchema } from "../schemas/paginationSchema";
+import {
+  createPatientSchema,
+  updatePatientSchema,
+} from "../schemas/patientSchema";
 import { PatientService } from "../services/PatientService";
 import { NextFunction, Request, Response } from "express";
 
@@ -16,9 +20,10 @@ export class PatientController {
     }
   }
 
-  async getAllPatients(req: Request, res: Response, next: NextFunction) {
+  async getPatients(req: Request, res: Response, next: NextFunction) {
     try {
-      const patients = await this.service.getAllPatients();
+      const requestData = paginationSchema.parse(req.query);
+      const patients = await this.service.getPatients(requestData);
       return res.status(201).json(patients);
     } catch (error: any) {
       next(error);

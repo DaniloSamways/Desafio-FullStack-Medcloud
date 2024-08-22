@@ -1,9 +1,11 @@
 import { pg } from "../database/pg";
 import {
   CreatePatientInput,
-  Patient,
   UpdatePatientInput,
-} from "../models/Patient";
+} from "../schemas/patientSchema";
+import { PaginationSchema } from "../schemas/paginationSchema";
+import { Patient } from "../models/Patient";
+import { getPatientsResponse } from "../@types/patient";
 
 export class PatientRepository {
   async createPatient(data: CreatePatientInput): Promise<Patient> {
@@ -25,11 +27,25 @@ export class PatientRepository {
     return createdPatient;
   }
 
-  async getAllPatients(): Promise<Patient[]> {
-    const patients = await pg
-      .query<Patient>("SELECT * FROM patient")
-      ?.then((res) => res.rows);
-    return patients;
+  async getPatients(data: PaginationSchema): Promise<getPatientsResponse> {
+    let query = "SELECT * FROM patient ORDER BY id";
+
+    if (data) {
+      query += ` LIMIT ${data.limit} OFFSET ${(data.page - 1) * data.limit}`;
+    }
+
+    const totalResult = await pg.query("SELECT COUNT(*) FROM patient");
+    const totalRecord = parseInt(totalResult.rows[0].count);
+    const totalPages = Math.ceil(totalRecord / data.limit);
+
+    const patients = await pg.query<Patient>(query)?.then((res) => res.rows);
+    return {
+      data: patients,
+      page: data.page,
+      limit: data.limit,
+      total: totalRecord,
+      pages: totalPages,
+    };
   }
 
   async getPatientById(id: string): Promise<Patient> {

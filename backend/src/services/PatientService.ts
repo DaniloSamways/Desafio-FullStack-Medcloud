@@ -1,17 +1,23 @@
 import { NotFoundRecord } from "../errors/NotFoundRecord";
-import { CreatePatientInput, Patient, UpdatePatientInput } from "../models/Patient";
+import {
+  CreatePatientInput,
+  UpdatePatientInput,
+} from "../schemas/patientSchema";
 import { PatientRepository } from "../repositories/PatientRepository";
+import { PaginationSchema } from "../schemas/paginationSchema";
+import { Patient } from "../models/Patient";
+import { getPatientsResponse } from "../@types/patient";
 
 export class PatientService {
-  constructor (private repository: PatientRepository) {}
+  constructor(private repository: PatientRepository) {}
 
   async createPatient(data: CreatePatientInput): Promise<Patient> {
     const createdPatient = await this.repository.createPatient(data);
     return createdPatient;
   }
 
-  async getAllPatients(): Promise<Patient[]> {
-    const patients = await this.repository.getAllPatients();
+  async getPatients(data: PaginationSchema): Promise<getPatientsResponse> {
+    const patients = await this.repository.getPatients(data);
     return patients;
   }
 
@@ -43,7 +49,7 @@ export class PatientService {
     if (!patientExists) {
       throw new NotFoundRecord(`Patient not found`);
     }
-    
+
     await this.repository.deletePatient(id);
   }
 }
