@@ -83,6 +83,7 @@ export function Client({ patient }: { patient: Patient }) {
       <Box
         component="main"
         sx={{
+          overflowY: "auto",
           py: 2,
           px: "var(--padding-x)",
           height: "100vh",
