@@ -82,7 +82,7 @@ export default function NewPatient() {
         component="main"
         sx={{
           overflowY: "auto",
-          py: 2,
+          py: 4,
           px: "var(--padding-x)",
           height: "100vh",
           backgroundColor: "var(--secondary-background-color)",

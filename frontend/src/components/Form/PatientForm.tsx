@@ -24,7 +24,7 @@ export default function PatientForm({
   return (
     <Form.Root onSubmit={onSubmit}>
       <FormProvider {...methods}>
-        <Form.Title>Dados do paciente</Form.Title>
+        <Form.Title>Dados pessoais</Form.Title>
         <Divider />
         <Form.Content>
           <Grid container spacing={4}>

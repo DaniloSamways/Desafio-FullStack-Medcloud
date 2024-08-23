@@ -32,7 +32,7 @@ export default function Home() {
   const [rowCount, setRowCount] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 7,
+    pageSize: 6,
   });
   const [loadingGrid, setLoadingGrid] = useState(true);
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ export default function Home() {
   });
 
   const fetchPatients = useCallback(
-    async (page: number = 0, pageSize: number = 7) => {
+    async (page: number = 0, pageSize: number = 6) => {
       console.log("fetchPatients");
       try {
         const res = await fetch(

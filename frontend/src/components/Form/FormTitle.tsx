@@ -7,7 +7,7 @@ export function FormTitle({ children }: { children: React.ReactNode }) {
         py: 3,
         px: 3,
         fontWeight: "bold",
-        color: "grey.600",
+        color: "grey.500",
       }}
     >
       {children}
