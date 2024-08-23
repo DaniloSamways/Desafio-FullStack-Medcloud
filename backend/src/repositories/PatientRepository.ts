@@ -81,4 +81,20 @@ export class PatientRepository {
   async deletePatient(id: string): Promise<void> {
     await pg.query("DELETE FROM patient WHERE id = $1", [id]);
   }
+
+  async findPatient(filter: string, limit: number): Promise<Patient[]> {
+    const patients = await pg
+      .query(
+        `SELECT * FROM patient WHERE 
+          name ILIKE $1 OR 
+          cpf ILIKE $1 OR 
+          email ILIKE $1
+        ORDER BY createdAt DESC
+        LIMIT $2`,
+        [`%${filter}%`, limit]
+      )
+      .then((res) => res.rows);
+
+    return patients;
+  }
 }

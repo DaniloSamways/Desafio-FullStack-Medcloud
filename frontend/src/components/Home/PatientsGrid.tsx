@@ -4,10 +4,10 @@ import { Box, IconButton } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Patient } from "@/models/Patient";
-import { deletePatient, setPatients } from "@/store";
+import { deletePatient } from "@/store";
 import { Modal } from "../Modal";
 import { OutlinedButton } from "../Buttons/OutlinedButton";
 import { FilledButton } from "../Buttons/FilledButton";
@@ -15,24 +15,41 @@ import { useRouter } from "next/navigation";
 import { Grid } from "@/components/Grid";
 import dayjs from "@/dayjsConfig";
 
-export function PatientsGrid() {
+interface PatientsGridProps {
+  patients: Patient[];
+  rowCountState: {
+    val: number;
+    set: (rowCount: number) => void;
+  };
+  paginationModelState: {
+    val: { page: number; pageSize: number };
+    set: (paginationModel: {
+      page: number;
+      pageSize: number;
+    }) => void;
+  };
+  loadingGridState: {
+    val: boolean;
+    set: (loadingGrid: boolean) => void;
+  };
+  fetchPatients: (page?: number, pageSize?: number) => void;
+}
+
+export function PatientsGrid({
+  patients,
+  rowCountState,
+  paginationModelState,
+  loadingGridState,
+  fetchPatients
+}: PatientsGridProps) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const [rowCount, setRowCount] = useState(0);
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 7,
-  });
   const [openModal, setOpenModal] = useState(false);
-  const [loadingGrid, setLoadingGrid] = useState(true);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(
     null
   );
 
   const dispatch = useDispatch();
-  const patients = useSelector((state: { patients: Patient[] }) => {
-    return state.patients;
-  });
   const router = useRouter();
 
   const columns: GridColDef[] = [
@@ -83,43 +100,22 @@ export function PatientsGrid() {
     },
   ];
 
-  const fetchPatients = useCallback(
-    async (page: number = 0, pageSize: number = 7) => {
-      try {
-        const res = await fetch(
-          `${apiUrl}/patients?page=${page+1}&limit=${pageSize}`
-        );
-        const response = await res.json();
-        setPaginationModel({ page, pageSize });
-        dispatch(setPatients(response.data));
-        setRowCount(response.total);
-      } catch (error) {
-        dispatch(setPatients([]));
-        console.error(error);
-      } finally {
-        setLoadingGrid(false);
-      }
-    },
-    [dispatch, apiUrl]
-  );
-
   const handleDelete = async () => {
     try {
       await fetch(`${apiUrl}/patients/${selectedPatientId}`, {
         method: "DELETE",
       });
       dispatch(deletePatient(selectedPatientId));
-      fetchPatients(paginationModel.page, paginationModel.pageSize);
+      fetchPatients(
+        paginationModelState.val.page,
+        paginationModelState.val.pageSize
+      );
     } catch (error) {
       console.error(error);
     } finally {
       setOpenModal(false);
     }
   };
-
-  useEffect(() => {
-    fetchPatients();
-  }, [dispatch, fetchPatients]);
 
   return (
     <Box
@@ -129,12 +125,12 @@ export function PatientsGrid() {
     >
       <Grid.Root
         paginationMode="server"
-        pageSizeOptions={[paginationModel.pageSize]}
+        pageSizeOptions={[paginationModelState.val.pageSize]}
         columns={columns}
-        rowCount={rowCount}
+        rowCount={rowCountState.val}
         rows={patients}
-        loading={loadingGrid}
-        paginationModel={paginationModel}
+        loading={loadingGridState.val}
+        paginationModel={paginationModelState.val}
         onPaginationModelChange={(params) => {
           fetchPatients(params.page, params.pageSize);
         }}

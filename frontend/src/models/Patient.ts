@@ -78,4 +78,9 @@ export const createPatientSchema = z.object({
     .max(56, "País inválido"),
 });
 
+export const findPatientSchema = z.object({
+  search: z.string(),
+});
+
 export type CreatePatientSchema = z.infer<typeof createPatientSchema>;
+export type FindPatientSchema = z.infer<typeof findPatientSchema>;

@@ -1,8 +1,8 @@
-import { InputBase, InputBaseProps, TextField } from "@mui/material";
-import { UseFormRegister } from "react-hook-form";
+import { InputBase, InputBaseProps } from "@mui/material";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 interface InputFieldProps extends InputBaseProps {
-  register: UseFormRegister<any>;
+  register: UseFormRegisterReturn<any>;
 }
 
 export function InputField({ register, ...rest }: InputFieldProps) {

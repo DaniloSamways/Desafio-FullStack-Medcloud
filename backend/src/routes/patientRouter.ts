@@ -14,6 +14,7 @@ patientRouter.post(
   patientController.createPatient.bind(patientController)
 );
 patientRouter.get("/", patientController.getPatients.bind(patientController));
+patientRouter.get("/search", patientController.findPatient.bind(patientController));
 patientRouter.get(
   "/:id",
   patientController.getPatientById.bind(patientController)

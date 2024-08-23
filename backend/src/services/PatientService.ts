@@ -25,7 +25,7 @@ export class PatientService {
     const patientExists = await this.repository.getPatientById(id);
 
     if (!patientExists) {
-      throw new NotFoundRecord(`Patient not found`);
+      throw new NotFoundRecord(`Paciente não encontrado`);
     }
 
     const patient = await this.repository.getPatientById(id);
@@ -36,7 +36,7 @@ export class PatientService {
     const patientExists = await this.repository.getPatientById(id);
 
     if (!patientExists) {
-      throw new NotFoundRecord(`Patient not found`);
+      throw new NotFoundRecord(`Paciente não encontrado`);
     }
 
     const updatedPatient = await this.repository.updatePatient(id, data);
@@ -47,9 +47,14 @@ export class PatientService {
     const patientExists = await this.repository.getPatientById(id);
 
     if (!patientExists) {
-      throw new NotFoundRecord(`Patient not found`);
+      throw new NotFoundRecord(`Paciente não encontrado`);
     }
 
     await this.repository.deletePatient(id);
+  }
+
+  async findPatient(filter: string, limit: number): Promise<Patient[]> {
+    const patients = await this.repository.findPatient(filter, limit);
+    return [...patients];
   }
 }

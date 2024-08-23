@@ -1,6 +1,8 @@
 import { paginationSchema } from "../schemas/paginationSchema";
 import {
   createPatientSchema,
+  findPatientById,
+  findPatientSchema,
   updatePatientSchema,
 } from "../schemas/patientSchema";
 import { PatientService } from "../services/PatientService";
@@ -32,8 +34,8 @@ export class PatientController {
 
   async getPatientById(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = req.params.id;
-      const patient = await this.service.getPatientById(id);
+      const requestData = findPatientById.parse(req.params);
+      const patient = await this.service.getPatientById(requestData.id);
       return res.status(201).json(patient);
     } catch (error: any) {
       next(error);
@@ -44,8 +46,9 @@ export class PatientController {
     try {
       const requestData = updatePatientSchema.parse(req.body);
 
-      const id = req.params.id;
-      const updatedPatient = await this.service.updatePatient(id, requestData);
+      const requestId = findPatientById.parse(req.params);
+
+      const updatedPatient = await this.service.updatePatient(requestId.id, requestData);
       return res.status(201).json(updatedPatient);
     } catch (error: any) {
       console.log(error);
@@ -55,9 +58,19 @@ export class PatientController {
 
   async deletePatient(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = req.params.id;
-      await this.service.deletePatient(id);
+      const requestData = findPatientById.parse(req.params);
+      await this.service.deletePatient(requestData.id);
       return res.status(204).send();
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
+  async findPatient(req: Request, res: Response, next: NextFunction) {
+    try {
+      const requestData = findPatientSchema.parse(req.query);
+      const patients = await this.service.findPatient(requestData.filter, requestData.limit);
+      return res.status(201).json(patients);
     } catch (error: any) {
       next(error);
     }

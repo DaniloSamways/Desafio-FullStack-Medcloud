@@ -92,5 +92,20 @@ export const updatePatientSchema = z.object({
     .optional(),
 });
 
+export const findPatientSchema = z.object({
+  filter: z
+    .string({ message: "Filtro é obrigatório" })
+    .min(3, "Filtro deve ter no mínimo 3 caracteres"),
+  limit: z.coerce.number().int().positive().default(10),
+});
+
+export const findPatientById = z.object({
+  id: z
+    .string({ message: "Id é obrigatório" })
+    .uuid({ message: "Id inválido" }),
+});
+
 export type CreatePatientInput = z.infer<typeof createPatientSchema>;
 export type UpdatePatientInput = z.infer<typeof updatePatientSchema>;
+export type FindPatientInput = z.infer<typeof findPatientSchema>;
+export type FindPatientByIdInput = z.infer<typeof findPatientById>;
