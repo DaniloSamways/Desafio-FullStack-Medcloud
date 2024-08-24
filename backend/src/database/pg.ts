@@ -7,4 +7,7 @@ export const pg = new Pool({
   password: env.postgres.password,
   database: env.postgres.database,
   port: Number(env.postgres.port ?? "5432"),
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });

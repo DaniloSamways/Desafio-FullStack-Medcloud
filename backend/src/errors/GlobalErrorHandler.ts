@@ -23,6 +23,6 @@ export class GlobalErrorHandler {
     }
 
     console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error", error: JSON.stringify(error) });
   }
 }
