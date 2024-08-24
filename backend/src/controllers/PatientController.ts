@@ -60,7 +60,7 @@ export class PatientController {
     try {
       const requestData = findPatientById.parse(req.params);
       await this.service.deletePatient(requestData.id);
-      return res.status(204).send();
+      return res.status(200).send();
     } catch (error: any) {
       next(error);
     }

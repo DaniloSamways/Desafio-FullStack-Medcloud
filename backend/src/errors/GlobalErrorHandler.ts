@@ -14,7 +14,12 @@ export class GlobalErrorHandler {
     }
 
     if (error instanceof ZodError) {
-      return res.status(400).json({ message: error.errors });
+      const formattedError = error.errors.map((error) => ({
+        message: error.message,
+        path: error.path.join("."),
+      }));
+
+      return res.status(400).json(formattedError);
     }
 
     console.error(error);
