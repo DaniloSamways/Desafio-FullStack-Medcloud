@@ -4,7 +4,7 @@ import { FilledButton } from "@/components/Buttons/FilledButton";
 import { Footer } from "@/components/Footer";
 import PatientForm from "@/components/Form/PatientForm";
 import { PageTitle } from "@/components/PageTitle";
-import { CreatePatientSchema, Patient } from "@/models/Patient";
+import { createPatientSchema, CreatePatientSchema, Patient } from "@/models/Patient";
 import { updatePatient } from "@/store";
 import { Box } from "@mui/material";
 import dayjs from "@/dayjsConfig";
@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function Client({ patient }: { patient: Patient }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -32,6 +33,7 @@ export function Client({ patient }: { patient: Patient }) {
       country: patient.address.country,
       complement: patient.address.complement,
     },
+    resolver: zodResolver(createPatientSchema)
   });
   const {
     handleSubmit,
