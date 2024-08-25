@@ -12,6 +12,12 @@ provider:
 functions:
   api:
     handler: handler.handler
+    environment:
+      POSTGRES_URL: ${env:POSTGRES_URL}
+      POSTGRES_DB : ${env:POSTGRES_DB}
+      POSTGRES_USER: ${env:POSTGRES_USER}
+      POSTGRES_PASS: ${env:POSTGRES_PASS}
+      POSTGRES_PORT: ${env:POSTGRES_PORT}
     events:
       - httpApi: "*"
 
